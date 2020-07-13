@@ -1,0 +1,296 @@
+button.link {
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    outline: none;
+    display: inline-block;
+}
+.example-full-width {
+  width: 80%;
+  margin: 5%;
+  text-align: right;
+}
+.img1{
+  height: 40px;
+  margin-left :5px;
+  background: none;
+}
+
+.border{
+  border: solid 1px;
+  border-color: blue($color: #767677);
+}
+
+.mat-option {
+  line-height: 40px;
+  height: 60px;
+  text-align: right;
+  direction: rtl;
+ }
+.save{
+  display: inline-block;
+  background-color: rgb(125, 163, 59);
+  color: white;
+  float: left;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin: 9.5px;
+  border-top-right-radius: 20px 50%;
+  border-top-left-radius: 20px 50%;
+  border-bottom-right-radius: 20px 50%;
+  border-bottom-left-radius: 20px 50%;
+  font-size: 25px;
+  text-align: right;
+}
+.rightAndLeft
+{
+  margin: 15px;
+  padding: 5px;
+}
+
+.btnRounded{
+  display: inline-block;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important;
+  background-color: rgb(154, 202, 73);
+  color: white;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-left: 100px;
+  margin-right: 100px;
+  border-top-right-radius: 20px 50%;
+  border-top-left-radius: 20px 50%;
+  border-bottom-right-radius: 20px 50%;
+  border-bottom-left-radius: 20px 50%;
+  font-size: 25px;
+  text-align: center;
+}
+td{
+  height: 80px;
+}
+p {
+  margin-top: 0;
+  color: red;
+  margin-right: 40px;
+}
+.example-form {
+  min-width: 385px;
+  max-width: 385px;
+margin: auto;  }
+  
+  .btn-default
+  {
+    background-color: white;
+  }
+  .mat-radio-outer-circle {
+    box-sizing: border-box;
+
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: border-color ease 280ms;
+    width: 20px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    margin-left: 5px !important;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+ // color:  rgb(35, 48, 100);
+}
+  // .btn,
+  .waves-light,
+  .spnRounded{
+    display: inline-block;
+    background-color: white;
+    border: solid 1px rgb(179, 179, 179);
+    color: rgb(154, 202, 73);
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 9.5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin: 9.5px;
+    border-top-right-radius: 20px 50%;
+    border-top-left-radius: 20px 50%;
+    border-bottom-right-radius: 20px 50%;
+    border-bottom-left-radius: 20px 50%;
+    font-size: 25px;
+    text-align: center;
+  }
+  .description-item {
+    span:first-child {
+      font-weight: bold;
+      display: inline-block;
+      width: 4em;
+      &::after {
+        content: ": ";
+      }
+      }
+    }
+    .mat-radio-button ~ .mat-radio-button {
+      margin-left: 16px;
+    }
+    .image-container {
+        display: inline-block;
+        width: 35px;
+        flex: 2px;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        margin-left: 5px;
+       
+    }
+    .modal-dialog.modal-notify.modal-danger .modal-header{
+      background-color:white;
+    }
+    .mat-form-field {
+      font-family: Calibri;
+        width: 80%;
+    }.action
+    {
+      background:none;
+      border: none;
+    cursor: pointer;
+    color: rgb(35, 48, 100);
+    
+    }
+    .action1
+    {
+      background: none;
+      border: none;
+    cursor: pointer;
+    margin: 5px;
+    }
+    .btnAction
+    {
+      cursor: pointer;
+      background: none;
+      border: none;
+        float: left;
+        flex: 2px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        margin-right: 5px;
+        width: 33px;
+        height: 40px;
+    }
+    button.link {
+        background: #fff;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        outline: none;
+        display: inline-block;
+    }
+    
+    .mat-radio-label-content {
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
+      user-select: auto;
+      display: inline-block;
+      order: 0;
+      line-height: unset;
+      /* padding-left: 8px; */
+      /* padding-right: 5px; */
+      padding: 5px;
+    }
+    
+    .mat-radio-label {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      width: 100%;
+    }
+    .mat-radio-button {
+      padding-right: 25px;
+      display: inline-block;
+      -webkit-tap-highlight-color: transparent;
+    
+      outline: 0;
+    }
+    p {
+      margin-top: 0;
+      color: red;
+      margin-right: 40px;
+    }
+    
+    .example-form {
+        min-width: 385px;
+        max-width: 385px;
+    margin: auto;  }
+      
+    
+    .btnRounded{
+      display: inline-block;
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important;
+      background-color: rgb(154, 202, 73);
+      color: white;
+      padding-left: 50px;
+      padding-right: 50px;
+      margin-left: 100px;
+      margin-right: 100px;
+      border-top-right-radius: 20px 50%;
+      border-top-left-radius: 20px 50%;
+      border-bottom-right-radius: 20px 50%;
+      border-bottom-left-radius: 20px 50%;
+      font-size: 25px;
+      text-align: center;
+    }
+    .mat-radio-outer-circle {
+      left: 5px;
+      border-style: dotted;
+    }
+    td{
+    height: 80px;
+    }
+    .mat-checkbox-inner-container-no-side-margin {
+      margin-right: 10px;
+    }
+    .example-full-width {
+      width: 80%;
+      text-align: right;
+      margin: auto;
+    }
+    .mat-checkbox-inner-container-no-side-margin {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .mat-form-field-infix{
+      text-align: right;
+    }
+    .border{
+      border: solid 1px;
+      border-color: blue($color: #767677);
+     
+    }
+    
+    .mat-form-field-appearance-legacy .mat-form-field-infix {
+      padding: .4375em 0;
+      font-size: 25px;}
+    .mat-option {
+      line-height: 40px;
+      height: 60px;
+      text-align: right;
+      direction: rtl;
+     }
+     
+    .img1{
+      height: 40px;
+      margin-left :5px;
+      background: none;
+    }
+    .mat-radio-outer-circle{
+      color: red($color: #000000);
+      background-color: red($color: #000000);
+    }
+    

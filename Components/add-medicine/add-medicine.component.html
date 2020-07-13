@@ -1,0 +1,339 @@
+<form class="example-form" [formGroup]="medicineDetailsForm">
+  <br> <img style="float: left; margin-left: 40%;" src="./assets/icons/medicine.png">
+  <input matInput placeholder=" בחר תרופה" [matAutocomplete]="auto" [formControl]="MedicineName"
+    formControlName="MedicineName" id="med" #medicineInp="matAutocompleteTrigger" #med class="medicineNameRounded">
+
+  <button (click)="startScaningBarcode()" class="action">
+    <button class="action" matTooltip="סרוק ברקוד"><img src="./assets/icons/barcode.png" height="60px"
+        width="60px"></button>
+  </button>
+  <div id="camera_open" [hidden]="!activeCamera" height="100px" width="200px"></div>
+
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayMedicine">
+
+    <mat-option *ngFor="let medicine of allMedicine" class="option" [value]="medicine"
+      (click)="medicineSelected(medicine)">
+      <span class="image-container">
+        <img *ngIf="medicine.images.length" aria-hidden [src]="basePathImage + medicine.images[0].url" height="30"
+          width="33">
+        <img *ngIf="!medicine.images.length" aria-hidden src="./assets/icons/deafultImage.png" height="30" width="33">
+      </span>
+      <span>{{medicine.dragHebName}}</span>
+      <!-- פרטים נוספים -->
+      <button type="button" class="action" (click)="basicModal.show(); medicineMoreDetails(medicine, $event)">
+        <img src="./assets/icons/moreDetails.png" height="22">
+      </button>
+
+      <!-- בחירת תרופה -->
+
+    </mat-option>
+
+    <button style="float: right;" *ngIf="allMedicine.length" class="action1" (click)="indexPage()">
+      <img src="./assets/icons/forward.png"> </button>
+    <button style="float: left;" *ngIf="allMedicine.length" class="action1" (click)="prevPage()">
+      <img src="./assets/icons/back.png"></button>
+
+    <div *ngIf="validPage == true">
+      <label>בחירה לא חוקית</label>
+    </div>
+
+  </mat-autocomplete>
+
+  <!--אנימציה טעינת נתונים-->
+  <div *ngIf="x==true">
+    המערכת טוענת נתונים...
+    <img src="./assets/icons/loading.gif" height="90px" width="90px">
+  </div>
+
+  <br>
+  <!-- פרטים נוספים -->
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-left" aria-label="Close"
+            (click)="basicModal.hide(); med.focus(); medicineInp.openPanel()">
+            <span aria-hidden="true">×</span>
+          </button>
+
+          <h4 *ngIf="currentMedicine" class="modal-title w-100" id="myModalLabel">{{currentMedicine.dragHebName}}</h4>
+        </div>
+
+        <div class="modal-body">
+          <div style="float: left" *ngIf="currentMedicine != null">
+
+            <span class="image-container">
+              <img *ngIf="currentMedicine.images.length" aria-hidden
+                [src]="basePathImage + currentMedicine.images[0].url" height="105" width="95">
+              <img *ngIf="!currentMedicine.images.length" aria-hidden src="./assets/icons/deafultImage.png" height="105"
+                width="95">
+            </span>
+          </div>
+          <div style="float: left" *ngIf="currentMedicine">
+            <b> שם התרופה :</b>
+            <span>{{currentMedicine.dragEnName}}</span><br>
+            <b>חומר פעיל :</b>
+            <span>{{currentMedicine.activeComponentsDisplayName}}</span><br>
+            <b>אופן הנטילה :</b>
+            <span>{{currentMedicine.usageForm}}</span><br>
+            <b> סיפטום :</b>
+            <span>{{currentMedicine.secondarySymptom}}</span><br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            (click)="qentity=true;add=true ; basicModal.hide();medicineSelected(currentMedicine)">הוסף</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- אם קיים חומר פעיל זהה -->
+  <div *ngIf="generic==true">
+    <button (click)="frame.show()" class="action">קיימת תרופה בעלת מרכיב זהה</button>
+  </div>
+  <div mdbModal #frame="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+      <div class="modal-content text-center">
+        <div class="modal-header d-flex justify-content-center">
+          <button type="button" class="action" placement="bottom" mdbPopoverHeader="תרופה גנרית זהה"
+            mdbPopover="המרכיב הפעיל של התרופה שווה" mdbWavesEffect>
+            <p>קימת תרופה בעלת חומר פעיל זהה</p> <img src="./assets/icons/ask.png">
+          </button>
+        </div>
+        <div class="modal-body">
+          <img src="./assets/icons/activeComponent.jpg">
+
+        </div>
+        <div class="modal-footer justify-content-center">
+          <span class="spnRoundedBlue">שינוי מינון</span>
+          <a type="button" class="action1" (click)="changeDosage();frame.hide()">
+            <img src="./assets/icons/editMedicine.png">
+          </a>
+          <span class="spnRoundedGreen">הוספה למלאי</span>
+          <a type="button" class="action1" (click)="addStock(); frame.hide()">
+            <img src="./assets/icons/addToStock.png">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- הוספת תרופה -->
+  <!-- <div *ngIf="add==true">
+    <div *ngIf="qentity==true">
+      <table class="example-full-width">
+        <tr>
+          <td>
+            <mat-radio-group>
+              <mat-radio-button color="primary" value="wait" (change)="buy=false">עדיין לא נרכש</mat-radio-button>
+              <mat-radio-button color="primary" value="activebuy" (change)="buy=true">נרכש</mat-radio-button>
+            </mat-radio-group>
+          </td>
+        </tr>
+        <tr *ngIf="buy==true">
+          <td>
+            <img src="./assets/icons/amount.png">
+            <mat-form-field class="example-full-width">
+              <input type="number" formControlName="TotalQuantity" matInput placeholder="כמות כוללת מהתרופה">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="./assets/icons/calendar.png">
+            <mat-label padding-right=5px>תקופת נטילת התרופה :</mat-label> <br>
+            <mat-radio-group>
+              <mat-radio-button value="2" color="primary" (change)="Till(0)"> זמן בלתי מוגבל </mat-radio-button>
+              <mat-radio-button value="1" color="primary" (change)="Till(1)">זמן מוגבל </mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="limitedTimeBoolian == true" id="divlimit">
+              <img src="./assets/icons/number.png" height="25px">
+              <mat-form-field class="example-full-width">
+                <input type="number" formControlName="dateNumber" matInput placeholder="מס ימים">
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <br>
+            <img src="./assets/icons/food1.png" height="25px">
+            <mat-form-field class="example-full-width">
+              <mat-label> אופן הנטילה</mat-label>
+              <mat-select>
+                <mat-option value="לפני אוכל" (click)="howToTake(1)">
+                  <img src="./assets/icons/לפני אוכל.jpg" class="img1">
+                  <span>לפני אוכל</span>
+                </mat-option>
+                <mat-option value="עם אוכל" (click)="howToTake(2)">
+                  <img src="./assets/icons/עם אוכל.jpg" class="img1">
+                  <span>עם אוכל</span>
+                </mat-option>
+                <mat-option value="אחרי אוכל" (click)="howToTake(3)">
+                  <img src="./assets/icons/אחרי אוכל.jpg" class="img1">
+                  <span>אחרי אוכל</span>
+                </mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="./assets/icons/amount.png">
+            <mat-form-field class="example-full-width">
+              <input formControlName="Amount" type="number" matInput placeholder="כמות לנטילה">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="./assets/icons/frequency.png">
+            <mat-form-field class="example-full-width">
+              <input type="number" [value]="frequency" formControlName="Frequency" (ngModelChange)="frequency = $event"
+                (change)="frequencyonday(frequency)" matInput placeholder="כמה פעמים ביום">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td *ngIf="frequency >= 1" id="divfrequency">
+            <div id="textTime" *ngFor="let f of hoursToScheduler; let i = index">
+              <img src="./assets/icons/hourInDay.png">
+              <mat-form-field class="example-full-width">
+                <input type="time" id="{{f}}" [(ngModel)]="hoursToScheduler[i]" [ngModelOptions]="{standalone: true}"
+                  matInput placeholder="שעה">
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+        <button type="submit" (click)="save()" class="spnRounded" mat-raised-button
+          matTooltip="שמור תרופה חדשה">שמור</button>
+
+      </table>
+    </div>
+  </div>
+</form> -->
+  <div *ngIf="add==true">
+    <div *ngIf="qentity==true">
+      <table class="example-full-width">
+        <tr>
+          <td style="padding: 10px;">
+            <img src="./assets/icons/v.png" width="25px" height="25px">
+            <span>האם התרופה נמצאת אצלי?</span>
+
+            <mat-checkbox color="primary" (click)="buy=!buy"></mat-checkbox>
+          </td>
+        </tr>
+        <tr *ngIf="buy==true">
+          <td>
+            <img src="./assets/icons/amount.png">
+            <mat-form-field class="example-full-width">
+              <input type="number" formControlName="TotalQuantity" matInput placeholder="כמות כוללת מהתרופה" required
+                pattern="^[0-9]+$" minlength="1" maxlength="100">
+            </mat-form-field>
+            <div class="err" *ngIf="TotalQuantity.errors && TotalQuantity.dirty">
+              <p *ngIf="TotalQuantity.errors.required">שדה חובה</p>
+              <p *ngIf="TotalQuantity.errors.pattern">שדה זה יכול להכיל רק מספרים</p>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding: 10px;">
+            <img src="./assets/icons/calendar.png" style="padding-left: 5px;">
+            <mat-label padding-right=5px>כמה זמן עלי לקחת את התרופה :</mat-label> <br>
+            <mat-radio-group>
+              <mat-radio-button value="2" color="primary" (change)="Till(0)"> זמן בלתי מוגבל </mat-radio-button>
+              <mat-radio-button value="1" color="primary" (change)="Till(1)">זמן מוגבל </mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="limitedTimeBoolian == true" id="divlimit">
+              <img src="./assets/icons/number.png" height="25px">
+              <mat-form-field class="example-full-width">
+                <input type="number" formControlName="dateNumber" matInput placeholder="מס ימים" required
+                  pattern="^[0-9]+$" minlength="1" maxlength="100">
+              </mat-form-field>
+              <div class="err" *ngIf="dateNumber.errors && dateNumber.dirty">
+                <p *ngIf="dateNumber.errors.required">שדה חובה</p>
+                <p *ngIf="dateNumber.errors.pattern">שדה זה יכול להכיל רק מספרים</p>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <br>
+            <img src="./assets/icons/food1.png" height="25px">
+            <mat-form-field class="example-full-width">
+              <mat-label> הוראות מיוחדות</mat-label>
+              <mat-select>
+                <mat-option value="לפני אוכל" (click)="howToTake(1)">
+                  <img src="./assets/icons/לפני אוכל.jpg" class="img1">
+                  <span>לפני אוכל</span>
+                </mat-option>
+                <mat-option value="עם אוכל" (click)="howToTake(2)">
+                  <img src="./assets/icons/עם אוכל.jpg" class="img1">
+                  <span>עם אוכל</span>
+                </mat-option>
+                <mat-option value="אחרי אוכל" (click)="howToTake(3)">
+                  <img src="./assets/icons/אחרי אוכל.jpg" class="img1">
+                  <span>אחרי אוכל</span>
+                </mat-option>
+
+
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="./assets/icons/amount.png">
+            <mat-form-field class="example-full-width">
+              <input formControlName="Amount" type="number" matInput placeholder="מה המינון שלי" required
+                pattern="^[0-9]+$" minlength="1" maxlength="4">
+            </mat-form-field>
+            <div class="err" *ngIf="Amount.errors && Amount.dirty">
+              <p *ngIf="Amount.errors.required">שדה חובה</p>
+              <p *ngIf="Amount.errors.pattern">שדה זה יכול להכיל רק מספרים</p>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <img src="./assets/icons/frequency.png">
+            <mat-form-field class="example-full-width">
+              <input type="number" [value]="frequency" formControlName="Frequency" (ngModelChange)="frequency = $event"
+                (change)="frequencyonday(frequency)" matInput placeholder="כמה פעמים ביום" required pattern="^[0-9]+$"
+                minlength="1" maxlength="12">
+            </mat-form-field>
+            <div class="err" *ngIf="Frequency.errors && Frequency.dirty">
+              <p *ngIf="Frequency.errors.required">שדה חובה</p>
+              <p *ngIf="Frequency.errors.pattern">שדה זה יכול להכיל רק מספרים</p>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td *ngIf="frequency >= 1" id="divfrequency">
+            <div id="textTime" *ngFor="let f of hoursToScheduler; let i = index">
+              <img src="./assets/icons/hourInDay.png">
+              <mat-form-field class="example-full-width">
+                <input type="time" id="{{f}}" [(ngModel)]="hoursToScheduler[i]" [ngModelOptions]="{standalone: true}"
+                  matInput placeholder="שעה">
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+        <button type="submit" (click)="save()" class="btnRounded" mat-raised-button
+          matTooltip="שמור תרופה חדשה">שמור</button>
+
+      </table>
+    </div>
+  </div>
+</form>

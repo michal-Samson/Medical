@@ -1,0 +1,107 @@
+<div class="continer">
+    <div class="menu" id="menu1" aria-expanded="true" aria-label="תפריט ראשי" role="button" tabindex="0"
+        [matMenuTriggerFor]="menu">
+        <svg focusable="false" viewBox="0 0 24 24">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+        </svg>
+        <mat-menu #menu="matMenu">
+            <a mat-menu-item [routerLink]="['/home']" routerLinkActive="active">
+                <span>אודות</span>
+                <img src="./assets/icons/navigationAbout.png" class="navigationIcon">
+            </a>
+            <a mat-menu-item [routerLink]="['/help']" routerLinkActive="active">
+                <span>עזרה</span>
+                <img src="./assets/icons/navigationHelp.png" class="navigationIcon">
+            </a>
+            <a mat-menu-item [routerLink]="['/medicineCart']" routerLinkActive="active">
+                <span>התרופות שלי </span>
+                <img src="./assets/icons/navigationMedicine.png" class="navigationIcon">
+            </a>
+            <a mat-menu-item [routerLink]="['/addMedicine']" routerLinkActive="active">
+                <span>הוספת תרופה</span>
+                <img src="./assets/icons/navigationAdd.png" class="navigationIcon">
+            </a>
+            <a mat-menu-item [routerLink]="['/stock']" routerLinkActive="active">
+                <span>מלאי</span>
+                <img src="./assets/icons/navigationMedicine.png" class="navigationIcon">
+            </a>
+            <!-- <a mat-menu-item [routerLink]="['/alerts']">
+                <span>התראה בודדת</span>
+                <img src="./assets/icons/navigationLogOff.png" class="navigationIcon">
+            </a>
+            <a mat-menu-item [routerLink]="['/listAlerts']">
+                <span>התראות רשימה</span>
+                <img src="./assets/icons/navigationLogOff.png" class="navigationIcon">
+            </a> -->
+        </mat-menu>
+    </div>
+
+    <!-- מחובר : שם + מחיקה / עריכה -->
+    <div *ngIf="connect == true" [matMenuTriggerFor]="userConectMenu" class="userConectMenu">
+        <div style="margin-left: 15px;">
+            <img src="./assets/icons/man.png" height="40">
+            <b>ברוך שובך </b>
+            <span>{{this.userName}}</span></div>
+        <!-- <button class="action">{{this.userName}}</button> -->
+        <mat-menu #userConectMenu="matMenu">
+            <a mat-menu-item routerLinkActive="active" (click)="EditUserDetails()">
+                <span class="userSpan">האיזור שלי</span>
+                <img src="./assets/icons/editUser.png" class="userIcon">
+            </a>
+            <a mat-menu-item routerLinkActive="active" (click)="frame.show()">
+                <span class="userSpan">הסר אותי מהאפליקציה</span>
+                <img src="./assets/icons/removeUser.png" class="userIcon">
+            </a>
+            <!--התנתקות מהאתר מחיקת הלקוח מהSESSION-->
+            <a mat-menu-item routerLinkActive="active" (click)="logOut()">
+                <span class="userSpan">יציאה מהחשבון</span>
+                <img src="./assets/icons/removeUser.png" class="userIcon">
+            </a>
+        </mat-menu>
+    </div>
+
+    <!-- מנותק : התחברות / הרשמה -->
+    <div *ngIf="connect == false" [matMenuTriggerFor]="userDisConectMenu" class="userDisConectMenu">
+        <div style="margin-left: 15px;">
+            <img src="./assets/icons/man.png" height="40">
+            <b>שלום אורח</b>
+        </div>
+        <mat-menu #userDisConectMenu="matMenu">
+            <a mat-menu-item [routerLink]="['/login']" routerLinkActive="active">
+                <span class="userSpan">התחברות</span>
+                <img src="./assets/icons/man.png" class="userIcon">
+            </a>
+            <a mat-menu-item [routerLink]="['/subscribe']" routerLinkActive="active">
+                <span class="userSpan">הרשמה</span>
+                <img src="./assets/icons/man.png" class="userIcon">
+            </a>
+        </mat-menu>
+    </div>
+
+    <div class="logo">
+        <img src="./assets/images/logo.jpg" height="60px" width="200px" name="myImage">
+    </div>
+
+    <router-outlet></router-outlet>
+</div>
+
+<!-- פופ אפ של הסרת לקוח -->
+<div mdbModal #frame="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">הסר אותי מהאפליקציה?</p>
+            </div>
+            <div class="modal-body">
+                <mdb-icon fas icon="times" size="4x"></mdb-icon>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a (click)="RemoveUser();frame.hide()" mdbBtn color="danger" outline="true" class="waves-effect"
+                    mdbWavesEffect>כן</a>
+                <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal"
+                    (click)="frame.hide()">לא</a>
+            </div>
+        </div>
+    </div>
+</div>
